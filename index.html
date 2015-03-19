@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+<head>
+<title>Ceux Qui Map</title>
+<meta charset="utf-8">
+<script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.6/mapbox.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.6/mapbox.css' rel='stylesheet' />
+
+<link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet' />
+<style type="text/css">
+	body { margin:0; padding:0; }
+	#map { position:absolute; top:0; bottom:0; width:100%; }
+	.leaflet-container img.leaflet-marker-icon {
+	  opacity: .8;
+	}
+	.cluster {
+	  border: 3px solid rgba(173, 205, 225, 0.8);
+	  background-color: rgba(118, 172, 209, 0.8);
+	  border-radius: 50%;
+	  text-align: center;
+	  color: white;
+	  font-weight: bold;
+	  font-size: 14px;
+	}
+	.cluster-sm {
+		padding-top: 2px;
+	}
+	.cluster-md {
+		padding-top: 7px;
+	}
+	.cluster-lg {
+		padding-top: 12px;
+	}
+	.cluster-xl {
+		padding-top: 17px;
+	}
+</style>
+	
+<body>
+	<!-- the 'map' div is where the map content is going -->
+	<div id="map"></div> 
+		<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
+		
+		<script src='geocoded.js'></script>
+		<script>
+		
+		L.mapbox.accessToken = 'pk.eyJ1IjoiYWJlbnJvYiIsImEiOiJEYmh3WWNJIn0.fus8CLBKPBHDvSxiayhJyg';
+    	var map = L.map('map',{maxZoom:12})
+        	.setView([0,0], 2);
+
+		L.tileLayer(
+		    "http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png", 
+		    {
+		    	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+				subdomains: 'abcd',
+				minZoom: 0,
+				maxZoom: 18
+			}
+		)
+		.addTo(map);
+
+		var markers = new L.MarkerClusterGroup({
+		    iconCreateFunction: function(cluster) {
+		    	var count = cluster.getChildCount();
+		    	var size = 0;
+		    	var sizeclass;
+		    	if (count < 20) { size = 30; sizeclass = 'cluster-sm'; } else
+				if (count < 75) { size = 40; sizeclass = 'cluster-md'; } else
+				if (count < 150) { size = 50; sizeclass = 'cluster-lg'; } else
+				if (count < 300) { size = 60; sizeclass = 'cluster-xl'; }
+		        return L.divIcon({ 
+		        	html: count, 
+		        	className: 'cluster '+sizeclass, 
+		        	iconSize: L.point(size, size) 
+		        });
+		    },
+			showCoverageOnHover: false
+		});
+
+	    for (var i = 0; i < points.length; i++) {
+	        var a = points[i];
+	        var marker = L.marker(new L.LatLng(a[0], a[1]), {
+	            icon: L.mapbox.marker.icon({'marker-symbol': 'bakery', 'marker-color': '76ACD1'})
+	        });
+	        markers.addLayer(marker);
+	    }
+
+	    map.addLayer(markers);
+
+	</script>
+</body>
+</html>

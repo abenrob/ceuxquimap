@@ -9,7 +9,7 @@
 <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet' />
 <style type="text/css">
 	body { margin:0; padding:0; }
-	#map { position:absolute; top:0; bottom:0; width:100%; }
+	#map { position:absolute; top:0; bottom:0; width:100%; background-color: rgb(204, 210, 212) }
 	.leaflet-container img.leaflet-marker-icon {
 	  opacity: .8;
 	}
@@ -45,8 +45,8 @@
 		<script>
 		
 		L.mapbox.accessToken = 'pk.eyJ1IjoiYWJlbnJvYiIsImEiOiJEYmh3WWNJIn0.fus8CLBKPBHDvSxiayhJyg';
-    	var map = L.map('map',{maxZoom:12})
-        	.setView([0,0], 2);
+    	var map = L.map('map',{maxZoom:12,minZoom:2})
+        	.setView([23,10], 2);
 
 		L.tileLayer(
 		    "http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png", 
@@ -67,7 +67,7 @@
 		    	if (count < 20) { size = 30; sizeclass = 'cluster-sm'; } else
 				if (count < 75) { size = 40; sizeclass = 'cluster-md'; } else
 				if (count < 150) { size = 50; sizeclass = 'cluster-lg'; } else
-				if (count < 300) { size = 60; sizeclass = 'cluster-xl'; }
+				{ size = 60; sizeclass = 'cluster-xl'; }
 		        return L.divIcon({ 
 		        	html: count, 
 		        	className: 'cluster '+sizeclass, 
